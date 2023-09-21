@@ -1,86 +1,47 @@
-﻿namespace Bingo;
+﻿using System.Data.Common;
+
+namespace Bingo;
 
 public class Player : IObserver
 {
-    public int[][] Board { get; private set; } = { new int[9], new int[9], new int[9] };
-    public bool[][] IsMatched { get; private set; } = { new bool[9], new bool[9], new bool[9] };
-    public bool Win { get; private set; } = new bool();
-    public int BoardNumber { get; private set; } = new int();
-    public Player(int number)
-    {
-        BoardNumber = number;
-        FillLines();
-    }
+    public List<Board> Boards { get; private set; } = new List<Board>();
 
-    private void FillLines()
+    public int PlayerNumber { get; private set; }
+
+    public Player(int number, int boardRow = 3, int boadColumn = 9, int boardCount = 1)
     {
-        var set = Enumerable.Range(1, 90).OrderBy(x => Random.Shared.Next()).Take(15).ToList();
-        for (int i = 0; i < 3; i++)
+        PlayerNumber = number;
+        for(int i = 0; i < boardCount; i++) 
         {
-            FillLine(Board[i], set);
-
+            Boards.Add(new Board(i, boardRow, boadColumn));
         }
-    }
-
-    private void FillLine(int[] line, List<int> set)
-    {
-        var randomColumn = Enumerable.Range(0, 9).OrderBy(x => Random.Shared.Next()).ToList();
-        var count = 0;
-        for (int i = 0; i < 5; i++)
-        {
-            var number = set.First();
-            line[randomColumn[i]] = number;
-            set.Remove(number);
-        }
-    }
-
-    public void WriteCard()
-    {
-        for (int i = 0; i < Board.Length; i++)
-        {
-            Console.WriteLine(new string('▬', 5 * 9 + 1));
-            Console.Write('│');
-            for (int j = 0; j < Board[i].Length; j++)
-            {
-                if (Board[i][j] == 0)
-                {
-
-                    Console.Write($" {' ',2} │");
-                }
-                else if (IsMatched[i][j])
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write($" {Board[i][j],2}");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write(" │");
-                }
-                else
-                    Console.Write($" {Board[i][j],2} │");
-                }
-            Console.WriteLine();
-        }
-        Console.WriteLine(new string('▬', 5 * 9 + 1));
-    }
-
-    public void Match(int i, int j)
-    {
-        Console.WriteLine($"Player with board number {BoardNumber} have the number!");
-        IsMatched[i][j] = true;
     }
 
     public void Update(object bingoBalls)
     {
-        
-        for (int i = 0; i < 3; i++)
+
+        for (int k = 0; k < Boards.Count; k++)
         {
-            var matchCount = 0;
-            for (int j = 0; j < 9; j++)
-            {  
-                if ((int)bingoBalls == Board[i][j])
-                    Match(i, j);
-                if (IsMatched[i][j] == true) matchCount ++;
+            int numbersCount = Boards[k].Column - 4;
+            if (numbersCount < 1) numbersCount = 1;
+            else if (numbersCount * Boards[k].Row > 90) numbersCount = 90 / Boards[k].Row;
+            for (int i = 0; i < Boards[k].Row; i++)
+            {
+                var matchCount = 0;
+                for (int j = 0; j < Boards[k].Column; j++)
+                {
+                    if ((int)bingoBalls == Boards[k].Card[i][j].number)
+                    {
+                        Boards[k].Match(i, j);
+                        Console.WriteLine(
+                            $"Player {PlayerNumber} with board number {Boards[k].BoardNumber} have the number!");
+                    }
+                    if (Boards[k].Card[i][j].isMatched == true)
+                        matchCount++;
+                }
+                if (matchCount == numbersCount)
+                    Boards[k].IsWin();
             }
-            if (matchCount == 5) Win = true;
         }
     }
 }

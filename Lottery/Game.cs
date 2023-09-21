@@ -9,11 +9,11 @@ public class Game : IObservable
         .Range(1, 90)
         .OrderBy(x => Random.Shared.Next())
         .ToList();
-    List<IObserver> observers;
+    private List<IObserver> _observers;
 
     public Game()
     {
-        observers = new List<IObserver>();
+        _observers = new List<IObserver>();
     }
 
     public void Play()
@@ -21,9 +21,9 @@ public class Game : IObservable
         Console.Clear();
         TakeNewBingoBalls();
         WriteBingoBalls();
-        Thread.Sleep(500);
+        //Thread.Sleep(500);
         NotifyObservers();
-        Thread.Sleep(500);
+        //Thread.Sleep(500);
     }
     private void WriteBingoBalls()
     {
@@ -44,17 +44,17 @@ public class Game : IObservable
 
     public void RegisterObserver(IObserver o)
     {
-        observers.Add(o);
+        _observers.Add(o);
     }
 
     public void RemoveObserver(IObserver o)
     {
-        observers.Remove(o);
+        _observers.Remove(o);
     }
 
     public void NotifyObservers()
     {
-        foreach (var o in observers)
+        foreach (var o in _observers)
         {
             o.Update(_bingoBalls.Last());
         }
