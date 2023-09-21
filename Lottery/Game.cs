@@ -15,9 +15,9 @@ public class Game : IObservable
 
     private void WriteBingoBalls()
     {
-        for (int i = 0; i < _bingoBalls.Count; i++)
+        foreach(var bingoball  in _bingoBalls) 
         {
-            Console.Write($"{_bingoBalls[i]},");
+            Console.Write($"{bingoball},");
         }
         Console.WriteLine();
     }

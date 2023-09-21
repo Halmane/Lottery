@@ -14,12 +14,10 @@ while (!IsGameEnd())
 
 bool IsGameEnd()
 {
-    for (int i = 0; i < players.Count(); i++)
+    foreach(var player in players)
     {
-        var player = players[i];
-        for (int j = 0; j < player.Boards.Count(); j++)
+        foreach(var board in player.Boards)
         {
-            var board = player.Boards[j];
             if (board.Win)
             {
                 Console.WriteLine(

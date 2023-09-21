@@ -62,21 +62,23 @@ public class Board
         {
             Console.WriteLine(new string('▬', 5 * Column + 1));
             Console.Write('│');
+            var row = Card[i];
             for (int j = 0; j < Column; j++)
             {
-                if (Card[i][j] == 0)
+                var column = row[j];
+                if (column == 0)
                 {
                     Console.Write($" {' ', 2} │");
                 }
                 else if (IsMatched[i][j])
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write($" {Card[i][j], 2}");
+                    Console.Write($" {column, 2}");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.Write(" │");
                 }
                 else
-                    Console.Write($" {Card[i][j], 2} │");
+                    Console.Write($" {column, 2} │");
             }
             Console.WriteLine();
         }
