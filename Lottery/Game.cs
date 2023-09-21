@@ -5,16 +5,14 @@ namespace Bingo;
 public class Game : IObservable
 {
     private readonly List<int> _bingoBalls = new List<int>();
-    private readonly List<int> _bingoBallsList = Enumerable
-        .Range(1, 90)
-        .OrderBy(x => Random.Shared.Next())
-        .ToList();
+    private readonly Queue<int> _bingoBallsList = BingoBalls.TakeBingoBalls().ToQueue();
     private readonly List<IObserver> _observers;
 
     public Game()
     {
         _observers = new List<IObserver>();
     }
+
     private void WriteBingoBalls()
     {
         for (int i = 0; i < _bingoBalls.Count; i++)
@@ -26,9 +24,8 @@ public class Game : IObservable
 
     private void TakeNewBingoBalls()
     {
-        var number = _bingoBallsList.First();
+        var number = _bingoBallsList.Dequeue();
         _bingoBalls.Add(number);
-        _bingoBallsList.Remove(number);
     }
 
     public void Play()

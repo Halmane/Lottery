@@ -11,7 +11,7 @@ public class Player : IObserver
     public Player(int number, int boardRow = 3, int boadColumn = 9, int boardCount = 1)
     {
         PlayerNumber = number;
-        for(int i = 0; i < boardCount; i++) 
+        for (int i = 0; i < boardCount; i++)
         {
             Boards.Add(new Board(i, boardRow, boadColumn));
         }
@@ -19,12 +19,13 @@ public class Player : IObserver
 
     public void Update(int bingoBalls)
     {
-
         for (int k = 0; k < Boards.Count; k++)
         {
             int numbersCount = Boards[k].Column - Board.CountEmptyСells;
-            if (numbersCount < 1) numbersCount = 1;
-            else if (numbersCount * Boards[k].Row > 90) numbersCount = 90 / Boards[k].Row;
+            if (numbersCount < 1)
+                numbersCount = 1;
+            else if (numbersCount * Boards[k].Row > 90)
+                numbersCount = 90 / Boards[k].Row;
             for (int i = 0; i < Boards[k].Row; i++)
             {
                 var matchCount = 0;
@@ -34,7 +35,8 @@ public class Player : IObserver
                     {
                         Boards[k].Match(i, j);
                         Console.WriteLine(
-                            $"Player {PlayerNumber} with board number {Boards[k].BoardNumber} have the number!");
+                            $"Player {PlayerNumber} with board number {Boards[k].BoardNumber} have the number!"
+                        );
                     }
                     if (Boards[k].IsMatched[i][j] == true)
                         matchCount++;

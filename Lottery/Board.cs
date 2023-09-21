@@ -1,4 +1,7 @@
-﻿namespace Bingo;
+﻿using System.Collections;
+using System.Collections.Generic;
+
+namespace Bingo;
 
 public class Board
 {
@@ -10,7 +13,7 @@ public class Board
     public int Row { get; private set; }
     public const int CountEmptyСells = 4;
 
-    public Board(int boardNumber,int row, int column)
+    public Board(int boardNumber, int row, int column)
     {
         BoardNumber = boardNumber;
         Column = column;
@@ -29,21 +32,26 @@ public class Board
             IsMatched[i] = new bool[Column];
         }
     }
+
     private void FillLines()
     {
         int numbersCount = Column - CountEmptyСells;
-        if (numbersCount < 1) numbersCount = 1;
-        else if (numbersCount * Row > 90) numbersCount = 90 / Row;
-        var set = Enumerable.Range(1, 90).OrderBy(x => Random.Shared.Next()).Take(numbersCount * Row).ToList();
+        if (numbersCount < 1)
+            numbersCount = 1;
+        else if (numbersCount * Row > 90)
+            numbersCount = 90 / Row;
+        var set = BingoBalls.TakeBingoBalls().Take(numbersCount * Row).ToQueue();
         for (int i = 0; i < Row; i++)
         {
-            var randomColumn = Enumerable.Range(0, Column).OrderBy(x => Random.Shared.Next()).ToList();
+            var randomColumn = Enumerable
+                .Range(0, Column)
+                .OrderBy(x => Random.Shared.Next())
+                .ToList();
             var count = 0;
             for (int j = 0; j < numbersCount; j++)
             {
-                var number = set.First();
+                var number = set.Dequeue();
                 Card[i][randomColumn[j]] = number;
-                set.Remove(number);
             }
         }
     }
@@ -58,18 +66,17 @@ public class Board
             {
                 if (Card[i][j] == 0)
                 {
-
-                    Console.Write($" {' ',2} │");
+                    Console.Write($" {' ', 2} │");
                 }
                 else if (IsMatched[i][j])
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write($" {Card[i][j],2}");
+                    Console.Write($" {Card[i][j], 2}");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.Write(" │");
                 }
                 else
-                    Console.Write($" {Card[i][j],2} │");
+                    Console.Write($" {Card[i][j], 2} │");
             }
             Console.WriteLine();
         }
@@ -78,7 +85,7 @@ public class Board
 
     public void Match(int i, int j)
     {
-        IsMatched[i][j] =  true;
+        IsMatched[i][j] = true;
     }
 
     public void IsWin()
