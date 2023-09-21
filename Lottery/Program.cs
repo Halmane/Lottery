@@ -19,10 +19,11 @@ bool IsGameEnd()
         var player = players[i];
         for (int j = 0; j < player.Boards.Count(); j++)
         {
-            if (player.Boards[j].Win)
+            var board = player.Boards[j];
+            if (board.Win)
             {
                 Console.WriteLine(
-                    $"Player {player.PlayerNumber} with board number {player.Boards[j].BoardNumber} win!"
+                    $"Player {player.PlayerNumber} with board number {board.BoardNumber} win!"
                 );
                 foreach (var card in player.Boards)
                 {
