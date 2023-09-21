@@ -2,5 +2,5 @@
 
 public interface IObserver
 {
-    void Update(Object ob);
+    void Update(int bingoBalls);
 }

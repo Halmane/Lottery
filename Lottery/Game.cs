@@ -4,26 +4,16 @@ namespace Bingo;
 
 public class Game : IObservable
 {
-    private List<int> _bingoBalls = new List<int>();
-    private List<int> _bingoBallsList = Enumerable
+    private readonly List<int> _bingoBalls = new List<int>();
+    private readonly List<int> _bingoBallsList = Enumerable
         .Range(1, 90)
         .OrderBy(x => Random.Shared.Next())
         .ToList();
-    private List<IObserver> _observers;
+    private readonly List<IObserver> _observers;
 
     public Game()
     {
         _observers = new List<IObserver>();
-    }
-
-    public void Play()
-    {
-        Console.Clear();
-        TakeNewBingoBalls();
-        WriteBingoBalls();
-        //Thread.Sleep(500);
-        NotifyObservers();
-        //Thread.Sleep(500);
     }
     private void WriteBingoBalls()
     {
@@ -41,6 +31,15 @@ public class Game : IObservable
         _bingoBallsList.Remove(number);
     }
 
+    public void Play()
+    {
+        Console.Clear();
+        TakeNewBingoBalls();
+        WriteBingoBalls();
+        //Thread.Sleep(500);
+        NotifyObservers();
+        //Thread.Sleep(500);
+    }
 
     public void RegisterObserver(IObserver o)
     {

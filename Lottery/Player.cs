@@ -17,12 +17,12 @@ public class Player : IObserver
         }
     }
 
-    public void Update(object bingoBalls)
+    public void Update(int bingoBalls)
     {
 
         for (int k = 0; k < Boards.Count; k++)
         {
-            int numbersCount = Boards[k].Column - 4;
+            int numbersCount = Boards[k].Column - Board.CountEmptyСells;
             if (numbersCount < 1) numbersCount = 1;
             else if (numbersCount * Boards[k].Row > 90) numbersCount = 90 / Boards[k].Row;
             for (int i = 0; i < Boards[k].Row; i++)
