@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Lottery;
+﻿namespace Bingo;
 
 public class Game
 {
@@ -83,7 +81,6 @@ public class Game
                 Console.WriteLine("Второй игрок выиграл!");
                 return true;
             }
-            ;
         }
         return false;
     }

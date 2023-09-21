@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Lottery;
+﻿namespace Bingo;
 
 public class Card
 {
@@ -37,7 +35,6 @@ public class Card
     {
         for (int i = 0; i < Board.Length; i++)
         {
-            Match(0, 5);
             Console.WriteLine(new string('▬', 5 * 9 + 1));
             Console.Write('│');
             for (int j = 0; j < Board[i].Length; j++)

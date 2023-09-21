@@ -1,3 +1,3 @@
-﻿using Lottery;
+﻿using Bingo;
 
 var game = new Game();
