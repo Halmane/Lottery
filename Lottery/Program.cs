@@ -16,14 +16,15 @@ bool IsGameEnd()
 {
     for (int i = 0; i < players.Count(); i++)
     {
-        for (int j = 0; j < players[i].Boards.Count(); j++)
+        var player = players[i];
+        for (int j = 0; j < player.Boards.Count(); j++)
         {
-            if (players[i].Boards[j].Win)
+            if (player.Boards[j].Win)
             {
                 Console.WriteLine(
-                    $"Player {players[i].PlayerNumber} with board number {players[i].Boards[j].BoardNumber} win!"
+                    $"Player {player.PlayerNumber} with board number {player.Boards[j].BoardNumber} win!"
                 );
-                foreach (var card in players[i].Boards)
+                foreach (var card in player.Boards)
                 {
                     card.WriteCard();
                 }
