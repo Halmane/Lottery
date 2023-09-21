@@ -1,6 +1,8 @@
-﻿namespace Bingo;
+﻿using System;
 
-public class Game
+namespace Bingo;
+
+public class Game : IObservable
 {
     private Card _playerOne = new Card();
     private Card _playerTwo = new Card();
@@ -9,6 +11,7 @@ public class Game
         .Range(1, 90)
         .OrderBy(x => Random.Shared.Next())
         .ToList();
+    List<IObserver> observers;
 
     public Game()
     {
@@ -55,6 +58,7 @@ public class Game
     {
         var number = _bingoBallsList.First();
         _bingoBalls.Add(number);
+        NotifyObservers();
         _bingoBallsList.Remove(number);
     }
 
@@ -83,5 +87,23 @@ public class Game
             }
         }
         return false;
+    }
+
+    public void RegisterObserver(IObserver o)
+    {
+        observers.Add(o);
+    }
+
+    public void RemoveObserver(IObserver o)
+    {
+        observers.Remove(o);
+    }
+
+    public void NotifyObservers()
+    {
+        foreach (var o in observers)
+        {
+            o.Update(_bingoBalls.Last());
+        }
     }
 }
