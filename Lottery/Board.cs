@@ -5,8 +5,7 @@ namespace Bingo;
 
 public class Board
 {
-    public int[][] Card { get; private set; }
-    public bool[][] IsMatched { get; private set; }
+    public Cell[][] Cells { get; private set; }
     public bool Win { get; private set; }
     public int BoardNumber { get; private set; }
     public int Column { get; private set; }
@@ -24,12 +23,14 @@ public class Board
 
     private void CreateCard()
     {
-        Card = new int[Row][];
-        IsMatched = new bool[Row][];
+        Cells = new Cell[Row][];
         for (int i = 0; i < Row; i++)
         {
-            Card[i] = new int[Column];
-            IsMatched[i] = new bool[Column];
+            Cells[i] = new Cell[Column];
+            for(int j = 0; j < Column; j++)
+            {
+                Cells[i][j] = new Cell();
+            }
         }
     }
 
@@ -51,7 +52,7 @@ public class Board
             for (int j = 0; j < numbersCount; j++)
             {
                 var number = set.Dequeue();
-                Card[i][randomColumn[j]] = number;
+                Cells[i][randomColumn[j]].Value = number;
             }
         }
     }
@@ -62,15 +63,15 @@ public class Board
         {
             Console.WriteLine(new string('▬', 5 * Column + 1));
             Console.Write('│');
-            var row = Card[i];
+            var row = Cells[i];
             for (int j = 0; j < Column; j++)
             {
-                var column = row[j];
+                var column = row[j].Value;
                 if (column == 0)
                 {
                     Console.Write($" {' ', 2} │");
                 }
-                else if (IsMatched[i][j])
+                else if (Cells[i][j].State)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write($" {column, 2}");
@@ -87,7 +88,7 @@ public class Board
 
     public void Match(int i, int j)
     {
-        IsMatched[i][j] = true;
+        Cells[i][j].State = true;
     }
 
     public void IsWin()

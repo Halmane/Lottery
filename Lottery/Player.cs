@@ -31,14 +31,14 @@ public class Player : IObserver
                 var matchCount = 0;
                 for (int j = 0; j < board.Column; j++)
                 {
-                    if (bingoBalls == board.Card[i][j])
+                    if (bingoBalls == board.Cells[i][j].Value)
                     {
                         board.Match(i, j);
                         Console.WriteLine(
                             $"Player {PlayerNumber} with board number {board.BoardNumber} have the number!"
                         );
                     }
-                    if (board.IsMatched[i][j] == true)
+                    if (board.Cells[i][j].State == true)
                         matchCount++;
                 }
                 if (matchCount == numbersCount)
