@@ -1,15 +1,15 @@
 ﻿namespace Bingo;
 
-public class Card : IObserver
+public class Player : IObserver
 {
     public int[][] Board { get; private set; } = { new int[9], new int[9], new int[9] };
     public bool[][] IsMatched { get; private set; } = { new bool[9], new bool[9], new bool[9] };
-    private IObservable _game;
-    public Card(IObservable game)
+    public bool Win { get; private set; } = new bool();
+    public int BoardNumber { get; private set; } = new int();
+    public Player(int number)
     {
+        BoardNumber = number;
         FillLines();
-        _game = game;
-        _game.RegisterObserver(this);
     }
 
     private void FillLines()
@@ -18,7 +18,7 @@ public class Card : IObserver
         for (int i = 0; i < 3; i++)
         {
             FillLine(Board[i], set);
-            
+
         }
     }
 
@@ -64,18 +64,23 @@ public class Card : IObserver
 
     public void Match(int i, int j)
     {
+        Console.WriteLine($"Player with board number {BoardNumber} have the number!");
         IsMatched[i][j] = true;
     }
 
     public void Update(object bingoBalls)
     {
+        
         for (int i = 0; i < 3; i++)
         {
+            var matchCount = 0;
             for (int j = 0; j < 9; j++)
-            {
+            {  
                 if ((int)bingoBalls == Board[i][j])
                     Match(i, j);
+                if (IsMatched[i][j] == true) matchCount ++;
             }
+            if (matchCount == 5) Win = true;
         }
     }
 }
