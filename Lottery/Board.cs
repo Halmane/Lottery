@@ -2,7 +2,8 @@
 
 public class Board
 {
-    public List<List<(int number, bool isMatched)>> Card { get; private set;} = new List<List<(int number, bool isMatched)>>();
+    public int[][] Card { get; private set;}
+    public bool[][] IsMatched { get; private set;}
     public bool Win { get; private set; }
     public int BoardNumber { get; private set; }
     public int Column { get; private set; }
@@ -19,13 +20,12 @@ public class Board
 
     private void CreateCard()
     {
+        Card = new int[Row][];
+        IsMatched = new bool[Row][];
         for (int i = 0; i < Row; i++) 
         {
-            Card.Add(new List<(int number, bool isMatched)>());
-            for (int j = 0; j < Column; j++)
-            {
-                Card[i].Add((0, false));
-            }
+            Card[i] = new int[Column];
+            IsMatched[i] = new bool[Column];
         }
     }
     private void FillLines()
@@ -41,7 +41,7 @@ public class Board
             for (int j = 0; j < numbersCount; j++)
             {
                 var number = set.First();
-                Card[i][randomColumn[j]] = (number,false);
+                Card[i][randomColumn[j]] = number;
                 set.Remove(number);
             }
         }
@@ -55,20 +55,20 @@ public class Board
             Console.Write('│');
             for (int j = 0; j < Column; j++)
             {
-                if (Card[i][j].number == 0)
+                if (Card[i][j] == 0)
                 {
 
                     Console.Write($" {' ',2} │");
                 }
-                else if (Card[i][j].isMatched)
+                else if (IsMatched[i][j])
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write($" {Card[i][j].number,2}");
+                    Console.Write($" {Card[i][j],2}");
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.Write(" │");
                 }
                 else
-                    Console.Write($" {Card[i][j].number,2} │");
+                    Console.Write($" {Card[i][j],2} │");
             }
             Console.WriteLine();
         }
@@ -77,7 +77,7 @@ public class Board
 
     public void Match(int i, int j)
     {
-        Card[i][j] = (Card[i][j].number, true);
+        IsMatched[i][j] =  true;
     }
 
     public void IsWin()

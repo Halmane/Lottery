@@ -30,13 +30,13 @@ public class Player : IObserver
                 var matchCount = 0;
                 for (int j = 0; j < Boards[k].Column; j++)
                 {
-                    if ((int)bingoBalls == Boards[k].Card[i][j].number)
+                    if ((int)bingoBalls == Boards[k].Card[i][j])
                     {
                         Boards[k].Match(i, j);
                         Console.WriteLine(
                             $"Player {PlayerNumber} with board number {Boards[k].BoardNumber} have the number!");
                     }
-                    if (Boards[k].Card[i][j].isMatched == true)
+                    if (Boards[k].IsMatched[i][j] == true)
                         matchCount++;
                 }
                 if (matchCount == numbersCount)
